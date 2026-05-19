@@ -21,12 +21,17 @@ const Profile = () => {
       <div className="h-[560px] bg-pink-500 gap-4">
         <div className="h-[150px] w-[120px] bg-purple-500">
           {data.map((post) => (
-            <div key={post.id}>{post.title}</div>
+            <div className="h-[150px] flex bg-red-800">{post.id}</div>
           ))}
         </div>
       </div>
 
       <div className="h-[80px] bg-blue-500 gap-4">
+        <GoHome className="w-10 h-10" />
+        <GoSearch className="w-10 h-10" />
+        <GoBell className="w-10 h-10" />
+        <GoMail className="w-10 h-10" />
+        <GoCopilot className="w-10 h-10" />
       </div>
     </div>
   );

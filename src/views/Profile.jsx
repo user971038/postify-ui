@@ -3,6 +3,10 @@ import { useParams } from 'react-router';
 
 const Profile = () => {
   const { userId } = useParams();
+  const url = import.meta.VITE_SERVER_POSTIFY;
+  console.log({ url });
+  
+  const { data, loading, error } = useFetch();
   console.log('User ID:', userId);
 
   return (

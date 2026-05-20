@@ -22,10 +22,23 @@ const Profile = () => {
 
   const submitPost = (e) => {
     e.preventDefault();
-    try {
+    const formData = new FormData();
+    formData.append('description', 'Nuevo post');
+    formData.append('user_id', userId);
 
+    files.forEach((e) => {
+      formData.append('files', e);
+    })
+
+    try {
+      const res = await fetch('http://localhost:8000/posts', {
+        method: 'POST',
+        body: formData
+      });
+      const post = await res.json();
+      console.log(post);
     } catch (error) {
-      
+      console.log(error);
     }
   };
 

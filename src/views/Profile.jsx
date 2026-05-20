@@ -17,10 +17,10 @@ const Profile = () => {
   }
 
   const handleFileChange = (e) => {
-    const files = Array.from(e.target.file)
+    const files = Array.from(e.target.files)
   }
 
-  const submitPost = (e) => {
+  const submitPost = async (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append('description', 'Nuevo post');

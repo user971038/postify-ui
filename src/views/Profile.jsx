@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router';
 
 const Profile = () => {
@@ -6,9 +6,28 @@ const Profile = () => {
   const urlPosts = `http://localhost:8000/users/${userId}/posts`;
   console.log({ urlPosts });
   
-  const { data, loading, error } = useFetch(urlPosts);
+  const { data, loading: _loading, error: _error } = useFetch(urlPosts);
 
   console.log(data);
+
+  const [files, setFiles] = useState([]);
+
+  const handleGetPost = (id) => {
+    console.log(id);
+  }
+
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.file)
+  }
+
+  const submitPost = (e) => {
+    e.preventDefault();
+    try {
+
+    } catch (error) {
+      
+    }
+  };
 
   return (
     <div className="flex flex-col">
@@ -33,6 +52,18 @@ const Profile = () => {
         <GoMail className="w-10 h-10" />
         <GoCopilot className="w-10 h-10" />
       </div>
+
+      <form name="uploadForm" onSubmit={submitPost}>
+        <input
+          type="file"
+          multiple
+          accept="image/*"
+          onChange={handleFileChange}
+        />
+        <div>
+          <input type="submit" value="Send File" />
+        </div>
+      </form>
     </div>
   );
 }

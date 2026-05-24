@@ -21,7 +21,8 @@ const Profile = () => {
   }
 
   const handleFileChange = (e) => {
-    const files = Array.from(e.target.files)
+    const f = Array.from(e.target.files)
+    setFiles(f);
   }
 
   const submitPost = async (e) => {
@@ -34,13 +35,17 @@ const Profile = () => {
       formData.append('files', e);
     })
 
+    console.log([...formData]);
+
     try {
       const res = await fetch('http://localhost:8000/posts', {
         method: 'POST',
         body: formData
       });
       const post = await res.json();
-      console.log(post);
+      console.log(post)
+      setFiles([])
+      e.target.reset()
     } catch (error) {
       console.log(error);
     }

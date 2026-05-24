@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router';
 
+import useFetch from '../hooks/userfetch';
+
+import { GoHome, GoSearch, GoBell, GoMail, GoCopilot } from "react-icons/go";
+
 const Profile = () => {
-  const { userId } = useParams();
+  const { userId } = useParams(); // tdbn
   const urlPosts = `http://localhost:8000/users/${userId}/posts`;
   console.log({ urlPosts });
   

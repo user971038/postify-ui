@@ -22,6 +22,8 @@ const Post = () => {
   const [editDescription, setEditDescription] = useState('');
   const [updating, setUpdating] = useState(false);
 
+  const [commentUsername, setCommentUsername] = useState('');
+
   const currentUserId = "00000000-0000-0000-0000-000000000000"; 
 
   const handleLike = async () => {
@@ -37,26 +39,53 @@ const Post = () => {
     }
   };
 
-  const submitComment = async (e) => {
-    e.preventDefault();
-    if (!commentText.trim()) return;
-    setCommenting(true);
-    try {
-      const res = await fetch(`http://localhost:8000/posts/${postId}/comments`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: commentText, user_id: currentUserId, post_id: postId })
-      });
-      if (res.ok) {
-        setCommentText('');
-        window.location.reload();
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setCommenting(false);
-    }
-  };
+    const submitComment = async (e) => {
+        e.preventDefault();
+
+        if (!commentUsername.trim()) {
+            alert("Por favor, ingresa tu nombre de usuario para comentar.");
+            return;
+        }
+
+        if (!commentText.trim()) return;
+        setCommenting(true);
+        try {
+            const userRes = await fetch(`http://localhost:8000/users/by-username/${commentUsername.trim()}`);
+            
+            if (!userRes.ok) {
+            if (userRes.status === 404) {
+                alert("El usuario especificado no existe.");
+            } else {
+                alert("Error al validar el usuario.");
+            }
+            return;
+            }
+        
+            const userData = await userRes.json();
+            const resolvedUserId = userData.id;
+
+            const res = await fetch(`http://localhost:8000/posts/${postId}/comments`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                content: commentText,
+                user_id: resolvedUserId, // 👈 Dynamic UUID from backend response
+                post_id: postId
+            })
+            });
+
+            if (res.ok) {
+            setCommentText('');
+            window.location.reload();
+            } else {
+            alert("Error al publicar el comentario.");
+            }
+        } catch (error) {
+            console.error("Error creating comment:", error);
+        } finally {
+            setCommenting(false);
+        }
+    };
 
   const handleDeletePost = async () => {
     const confirmDelete = window.confirm("¿Deseas eliminar esta publicación?");

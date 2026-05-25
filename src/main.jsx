@@ -6,6 +6,9 @@ import App from './App.jsx'
 import Profile from './views/Profile.jsx'
 import Post from './views/Post.jsx'
 
+import NewProfile from './views/NewProfile.jsx'
+import NewPost from './views/NewPost.jsx'
+
 import { BrowserRouter, Route, Routes } from 'react-router';
 
 createRoot(document.getElementById('root')).render(
@@ -15,6 +18,8 @@ createRoot(document.getElementById('root')).render(
         <Route path="/" element={<App />} />
         <Route path="/profile/:userId" element={<Profile  />} />
         <Route path="/post/:postId" element={<Post />} />
+        <Route path="/new-profile" element={<NewProfile />} />
+        <Route path="/new-post" element={<NewPost />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

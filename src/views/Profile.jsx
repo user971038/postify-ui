@@ -117,7 +117,7 @@ const Profile = () => {
           <FaHome className="w-5 h-5 cursor-pointer hover:text-white transition-colors" onClick={() => navigate('/')} />
           <GoSearch className="w-5 h-5 opacity-30 cursor-not-allowed" />
           <IoIosCreate className="w-5 h-5 cursor-pointer hover:text-white transition-colors" onClick={() => navigate(`/newpost`)} />
-          <FaGithub className="w-5 h-5 cursor-pointer hover:text-white transition-colors" onClick={() => navigate('/')} />
+          <FaGithub className="w-5 h-5 cursor-pointer hover:text-white transition-colors" onClick={() => window.open("https://github.com/user971038?tab=repositories", "_blank")} />
         </div>
 
       </div>

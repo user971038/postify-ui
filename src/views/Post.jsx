@@ -179,6 +179,22 @@ const Post = () => {
             <>
               <div className="p-4 bg-gray-900/60 border border-gray-800/80 rounded-xl space-y-3">
                 
+                <div className="flex justify-between items-center pb-2 border-b border-gray-800/40">
+                    <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-blue-600 to-purple-600 flex items-center justify-center text-[10px] font-bold text-white uppercase shadow-sm">
+                            {post.username ? post.username.substring(0, 2) : '??'}
+                        </div>
+                        <span className="text-xs font-semibold text-blue-400">@{post.username}</span>
+                    </div>
+                    <span className="text-[10px] text-gray-500 font-mono">
+                        {new Date(post.created_at).toLocaleDateString(undefined, { 
+                            year: 'numeric', 
+                            month: 'short', 
+                            day: 'numeric' 
+                        })}
+                    </span>
+                </div>
+
                 {isEditing ? (
                   <div className="space-y-2">
                     <textarea

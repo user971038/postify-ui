@@ -38,10 +38,6 @@ function App() {
     fetchUsersAndCheckDb();
   }, []);
 
-  const handleCreateProfile = () => {
-    alert("Create profile functionality coming soon!");
-  };
-
   return (
 
     <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
@@ -66,12 +62,12 @@ function App() {
 
           {dbError && (
             <div className="p-4 bg-red-950/30 border border-red-800 text-red-400 rounded-xl text-sm">
-              <strong>⚠️ Connection Error:</strong> {dbError}
+              <strong>⚠️ Error de Conexión:</strong> {dbError}
             </div>
           )}
 
           {!loading && !dbError && users.length === 0 && (
-            <p className="text-sm text-gray-500 italic text-center py-4">No profiles found in the system.</p>
+            <p className="text-sm text-gray-500 italic text-center py-4">No hay perfiles disponibles.</p>
           )}
 
           {!loading && !dbError && users.length > 0 && (
@@ -92,7 +88,7 @@ function App() {
 
         <footer>
           <button 
-            onClick={() => alert("Create profile coming next!")}
+            onClick={() => navigate('/NewProfile')}
             className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-lg shadow-purple-900/30 active:scale-[0.99]"
           >
             ➕ Crear Nuevo Perfil

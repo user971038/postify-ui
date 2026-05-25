@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router';
 import useFetch from '../hooks/useFetch';
 
 import { GoHome, GoSearch, GoBell, GoMail, GoCopilot } from "react-icons/go";
+import { FaUser } from "react-icons/fa";
 
 const Profile = () => {
   const { userId } = useParams();
@@ -41,12 +42,10 @@ const Profile = () => {
       const newPost = await res.json();
       console.log("Post created:", newPost);
       
-      // Clean up inputs
       setFiles([]);
       setDescription('');
       e.target.reset();
       
-      // Refresh the list to reveal the gorgeous new post
       window.location.reload(); 
     } catch (error) {
       console.error(error);
@@ -57,41 +56,28 @@ const Profile = () => {
     <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
       
       <div className="w-full max-w-md bg-gray-950 border border-gray-800 rounded-2xl p-6 shadow-2xl shadow-purple-950/10">
-        
-        <div className="flex justify-between items-center border-b border-gray-800 pb-4 mb-5">
-          <h1 
-            className="text-2xl font-extrabold bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-500 bg-clip-text text-transparent cursor-pointer hover:opacity-80 transition-opacity" 
-            onClick={() => navigate('/')}
-          >
-            Postify
-          </h1>
-        </div>
 
         <div className="bg-gray-900/40 border border-gray-800 rounded-xl p-4 mb-5">
-          <h2 className="text-xs font-bold text-purple-400 tracking-wider uppercase mb-2">👤 Identity Details</h2>
           
-          {userLoading && <p className="text-xs text-gray-500 animate-pulse">Decompressing profile token...</p>}
-          {userError && <p className="text-xs text-red-400">Error fetching user data.</p>}
+          {userLoading && <p className="text-xs text-gray-500 animate-pulse">Cargando...</p>}
+          {userError && <p className="text-xs text-red-400">No se pudo recuperar la información del perfil.</p>}
           
           {user && !userLoading && (
             <div className="space-y-1.5 text-sm text-gray-300">
-              <p className="text-[10px] text-gray-600 font-mono mb-1">UID: {userId}</p>
-              <p><span className="text-gray-500">Handle:</span> <span className="text-blue-400 font-medium">@{user.username || 'unknown'}</span></p>
-              <p><span className="text-gray-500">First Name:</span> {user.name || 'N/A'}</p>
-              <p><span className="text-gray-500">Last Name:</span> {user.lastname || 'N/A'}</p>
+              <p className="uppercase font-bold"><FaUser className="w-5 h-5 text-gray-500" /> {user.name || 'No se encontró el usuario.'} {user.lastname || ''}</p>
+              <p className="text-blue-400 font-medium">@{user.username || ''}</p>
             </div>
           )}
         </div>
 
         <div className="bg-gray-900/40 border border-gray-800 rounded-xl p-4 mb-5">
-          <h2 className="text-xs font-bold text-blue-400 tracking-wider uppercase mb-3">📝 Associated Publications</h2>
           
-          {postsLoading && <p className="text-xs text-gray-500 animate-pulse">Querying database array...</p>}
-          {postsError && <p className="text-xs text-red-400">Failed to render timeline entries.</p>}
+          {postsLoading && <p className="text-xs text-gray-500 animate-pulse">Cargando...</p>}
+          {postsError && <p className="text-xs text-red-400">No se pudieron recuperar las publicaciones.</p>}
           
-          <div className="max-h-[240px] overflow-y-auto space-y-3 pr-1 custom-scrollbar">
+          <div className="max-h-[600px] overflow-y-auto space-y-3 pr-1 custom-scrollbar">
             {posts && !postsLoading && posts.length === 0 && (
-              <p className="text-xs text-gray-500 italic text-center py-6">This record timeline is currently empty.</p>
+              <p className="text-xs text-gray-500 italic text-center py-6">No hay publicaciones.</p>
             )}
 
             {posts && !postsLoading && posts.length > 0 && (
@@ -101,7 +87,6 @@ const Profile = () => {
                     key={post.id} 
                     className="p-3 bg-gray-900 border border-gray-800/80 rounded-xl space-y-2 hover:border-purple-500/30 transition-colors"
                   >
-                    <div className="text-[10px] text-gray-600 font-mono">Post ID: {post.id.slice(0, 8)}...</div>
                     <div className="text-sm text-gray-200 font-medium leading-relaxed">{post.description}</div>
                     
                     {post.images && post.images.length > 0 && (

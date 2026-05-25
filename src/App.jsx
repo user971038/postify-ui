@@ -6,15 +6,6 @@ import './App.css'
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
-//function App() {
-  //return (
-    //<Routes>
-      //<Route path="/" element={<App />} />
-      //<Route path="/profile/:userId" element={<Profile />} />
-    //</Routes>
-  //)
-//}
-
 function App() {
   const navigate = useNavigate();
   
@@ -31,14 +22,14 @@ function App() {
         const res = await fetch('http://localhost:8000/users'); 
         
         if (!res.ok) {
-          throw new Error(`Database server responded with status: ${res.status}`);
+          throw new Error(`Status: ${res.status}`);
         }
         
         const data = await res.json();
         setUsers(data);
       } catch (error) {
-        console.error("Connection failed:", error);
-        setDbError("Could not connect to the database. Please ensure your backend is running.");
+        console.error("Error de conexión:", error);
+        setDbError("No se pudo conectar a la base de datos.");
       } finally {
         setLoading(false);
       }
@@ -52,60 +43,65 @@ function App() {
   };
 
   return (
-    <div className="p-6 max-w-xl mx-auto font-sans">
+
+    <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
       
-      {/* 1. App Title */}
-      <header className="border-b pb-4 mb-6 text-center">
-        <h1 className="text-4xl font-bold text-indigo-600">Postify</h1>
-        <p className="text-gray-500 text-sm">Connect and Share</p>
-      </header>
+      <div className="w-full max-w-md bg-gray-950 border border-gray-800 rounded-2xl p-6 shadow-2xl shadow-purple-950/20">
+        
+        <header className="text-center mb-8">
+          <h1 className="text-4xl font-extrabold bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-500 bg-clip-text text-transparent">
+            Postify
+          </h1>
+        </header>
 
-      {/* 2. Profiles Section / Database Error Check */}
-      <main className="mb-8">
-        <h2 className="text-xl font-semibold mb-3">Explore Profiles</h2>
+        <main className="mb-8">
+          <h2 className="text-sm font-semibold text-gray-400 mb-4 tracking-wide uppercase">Perfiles Disponibles</h2>
 
-        {loading && (
-          <p className="text-gray-500 animate-pulse">Checking database connection and loading profiles...</p>
-        )}
+          {loading && (
+            <div className="space-y-2">
+              <div className="h-12 bg-gray-900 border border-gray-800 rounded-xl animate-pulse" />
+              <div className="h-12 bg-gray-900 border border-gray-800 rounded-xl animate-pulse" />
+            </div>
+          )}
 
-        {dbError && (
-          <div className="p-4 bg-red-100 border border-red-400 text-red-700 rounded mb-4">
-            <strong>⚠️ Error:</strong> {dbError}
-          </div>
-        )}
+          {dbError && (
+            <div className="p-4 bg-red-950/30 border border-red-800 text-red-400 rounded-xl text-sm">
+              <strong>⚠️ Connection Error:</strong> {dbError}
+            </div>
+          )}
 
-        {!loading && !dbError && users.length === 0 && (
-          <p className="text-gray-500 italic">No profiles found in the database yet.</p>
-        )}
+          {!loading && !dbError && users.length === 0 && (
+            <p className="text-sm text-gray-500 italic text-center py-4">No profiles found in the system.</p>
+          )}
 
-        {!loading && !dbError && users.length > 0 && (
-          <ul className="space-y-2">
-            {users.map((user) => (
-              <li 
-                key={user.id} 
-                onClick={() => navigate(`/profile/${user.id}`)}
-                className="p-3 border rounded bg-white hover:bg-gray-50 cursor-pointer shadow-xs transition flex justify-between items-center"
-              >
-                <span className="font-medium text-gray-800">{user.name}</span>
-                <span className="text-xs text-gray-400">→ View Profile</span>
-              </li>
-            ))}
-          </ul>
-        )}
-      </main>
+          {!loading && !dbError && users.length > 0 && (
+            <ul className="space-y-2.5">
+              {users.map((user) => (
+                <li 
+                  key={user.id} 
+                  onClick={() => navigate(`/profile/${user.id}`)}
+                  className="p-3.5 bg-gray-900/50 border border-gray-800 rounded-xl hover:border-purple-500/50 hover:bg-gray-900 cursor-pointer transition-all duration-200 flex justify-between items-center group"
+                >
+                  <span className="font-medium text-gray-200 group-hover:text-white transition-colors">{user.name}</span>
+                  <span className="text-xs text-blue-400 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all">Ver Perfil →</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </main>
 
-      {/* 3. Action Button */}
-      <footer className="text-center">
-        <button 
-          onClick={handleCreateProfile}
-          className="w-full bg-indigo-600 text-white font-semibold py-3 px-4 rounded shadow-sm hover:bg-indigo-700 transition"
-        >
-          ➕ Create New Profile
-        </button>
-      </footer>
+        <footer>
+          <button 
+            onClick={() => alert("Create profile coming next!")}
+            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-lg shadow-purple-900/30 active:scale-[0.99]"
+          >
+            ➕ Crear Nuevo Perfil
+          </button>
+        </footer>
 
+      </div>
     </div>
   );
 }
 
-export default App
+export default App;

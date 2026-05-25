@@ -18,8 +18,8 @@ createRoot(document.getElementById('root')).render(
         <Route path="/" element={<App />} />
         <Route path="/profile/:userId" element={<Profile  />} />
         <Route path="/post/:postId" element={<Post />} />
-        <Route path="/new-profile" element={<NewProfile />} />
-        <Route path="/new-post" element={<NewPost />} />
+        <Route path="/newprofile" element={<NewProfile />} />
+        <Route path="/newpost" element={<NewPost />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

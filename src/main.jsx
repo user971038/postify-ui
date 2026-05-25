@@ -19,3 +19,7 @@ createRoot(document.getElementById('root')).render(
     </BrowserRouter>
   </StrictMode>,
 )
+
+// Clicking a post must link to server/posts/postId
+// Clicking a post must show details, likes, comments, and files
+

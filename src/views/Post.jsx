@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router';
 
 import useFetch from '../hooks/useFetch';
 
-import { GoSearch, GoHeart, GoComment, GoPaperAirplane, GoChevronLeft } from "react-icons/go";
+import { GoSearch, GoHeart, GoComment, GoPaperAirplane, GoChevronLeft, GoTrash } from "react-icons/go";
 import { FaUser, FaHome, FaGithub } from "react-icons/fa";
 import { IoIosCreate } from "react-icons/io";
 
@@ -16,6 +16,7 @@ const Post = () => {
 
   const [commentText, setCommentText] = useState('');
   const [commenting, setCommenting] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const currentUserId = "00000000-0000-0000-0000-000000000000"; 
 
@@ -65,14 +66,58 @@ const Post = () => {
     }
   };
 
+  const handleDeletePost = async () => {
+    const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar esta publicación? Esta acción no se puede deshacer.");
+    if (!confirmDelete) return;
+
+    setDeleting(true);
+    try {
+      const res = await fetch(`http://localhost:8000/posts/${postId}`, {
+        method: 'DELETE',
+      });
+
+      if (res.ok) {
+        console.log("Post deleted successfully");
+        navigate('/');
+      } else {
+        const errData = await res.json();
+        alert(errData.detail || "No se pudo eliminar la publicación.");
+      }
+    } catch (error) {
+      console.error("Error deleting post:", error);
+      alert("Error de conexión con el servidor.");
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const handleEditPost = () => {
+    
+  }
+
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
       
       <div className="w-full max-w-md h-[85vh] flex flex-col justify-between bg-gray-950 border border-gray-800 rounded-2xl p-6 shadow-2xl shadow-purple-950/10">
         
-        <div className="flex items-center gap-2 mb-4 text-gray-400">
-          <GoChevronLeft className="w-6 h-6 cursor-pointer hover:text-white transition-colors" onClick={() => navigate(-1)} />
-          <span className="text-sm font-semibold tracking-wide uppercase">Detalles de Publicación</span>
+        {/* Top Header Row with Back Button and Delete Action */}
+        <div className="flex items-center justify-between mb-4 text-gray-400">
+          <div className="flex items-center gap-2">
+            <GoChevronLeft className="w-6 h-6 cursor-pointer hover:text-white transition-colors" onClick={() => navigate(-1)} />
+            <span className="text-sm font-semibold tracking-wide uppercase">Detalles de Publicación</span>
+          </div>
+          
+          {/* Render delete button only if the post data exists successfully */}
+          {post && !postLoading && (
+            <button 
+              onClick={handleDeletePost}
+              disabled={deleting}
+              className="text-gray-500 hover:text-red-500 p-1.5 rounded-lg hover:bg-red-950/20 transition-all active:scale-95 disabled:opacity-40 cursor-pointer"
+              title="Eliminar Publicación"
+            >
+              <GoTrash className="w-4.5 h-4.5" />
+            </button>
+          )}
         </div>
 
         <div className="h-[62vh] overflow-y-auto space-y-4 pr-1 custom-scrollbar flex-1">
@@ -165,7 +210,7 @@ const Post = () => {
         <div className="bg-gradient-to-r from-blue-950/40 to-purple-950/40 border border-gray-800 rounded-xl p-3 flex justify-around text-gray-400 shadow-inner">
           <FaHome className="w-5 h-5 cursor-pointer hover:text-white transition-colors" onClick={() => navigate('/')} />
           <GoSearch className="w-5 h-5 opacity-30 cursor-not-allowed" />
-          <IoIosCreate className="w-5 h-5 cursor-pointer hover:text-white transition-colors" onClick={() => navigate(`/new-post/`)} />
+          <IoIosCreate className="w-5 h-5 cursor-pointer hover:text-white transition-colors" onClick={() => navigate(`/NewPost`)} />
           <FaGithub className="w-5 h-5 cursor-pointer hover:text-white transition-colors" onClick={() => navigate('/')} />
         </div>
 

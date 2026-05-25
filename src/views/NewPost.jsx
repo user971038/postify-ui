@@ -120,7 +120,7 @@ const NewPost = () => {
           </div>
 
           <div>
-            <label className="block text-[11px] uppercase tracking-wider text-gray-400 font-medium mb-2 pl-1">Adjuntar Imágenes</label>
+            <label className="block text-[11px] uppercase tracking-wider text-gray-400 font-medium mb-2 pl-1">Adjuntar Imagen</label>
             
             <div className="relative border border-dashed border-gray-800 hover:border-purple-500/40 bg-gray-900/30 rounded-xl p-4 transition-colors flex flex-col items-center justify-center cursor-pointer group">
               <input
@@ -131,8 +131,8 @@ const NewPost = () => {
                 className="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10"
               />
               <IoImageOutline className="w-6 h-6 text-gray-500 group-hover:text-purple-400 transition-colors mb-1.5" />
-              <span className="text-xs text-gray-400 font-medium">Seleccionar archivos</span>
-              <span className="text-[10px] text-gray-600 mt-0.5">Sube una o varias imágenes</span>
+              <span className="text-xs text-gray-400 font-medium">Seleccionar archivo</span>
+              <span className="text-[10px] text-gray-600 mt-0.5">Sube un imagen</span>
             </div>
 
             {previews.length > 0 && (

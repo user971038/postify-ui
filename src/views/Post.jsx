@@ -179,7 +179,7 @@ const Post = () => {
                 {post.images && post.images.length > 0 && (
                   <div className="grid grid-cols-1 gap-2 pt-1">
                     {post.images.map((img) => (
-                      <img key={img.id || img.url} src={img.url} alt="Post Attachment" className="w-full max-h-[220px] object-cover rounded-xl border border-gray-800/80" />
+                      <img key={img.id || img.url} src={img.url} alt="Post Attachment" className="max-h-[500px] max-w-full object-cover rounded-xl border border-gray-800/80" />
                     ))}
                   </div>
                 )}

@@ -88,7 +88,8 @@ const Profile = () => {
               <ul className="space-y-3">
                 {posts.map((post) => (
                   <li 
-                    key={post.id} 
+                    key={post.id}
+                    onClick={() => navigate(`/post/${post.id}`)}
                     className="p-3 bg-gray-900 border border-gray-800/80 rounded-xl space-y-2 hover:border-purple-500/30 transition-colors"
                   >
                     <div className="text-sm text-gray-200 leading-relaxed">{post.description}</div>

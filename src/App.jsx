@@ -1,5 +1,4 @@
 import { Routes, Route } from 'react'
-import Home from './views/Home'
 import Profile from './views/Profile'
 import './App.css'
 

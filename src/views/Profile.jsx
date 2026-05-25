@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router';
 
-import useFetch from '../hooks/userfetch';
+import useFetch from '../hooks/useFetch';
 
 import { GoHome, GoSearch, GoBell, GoMail, GoCopilot } from "react-icons/go";
 

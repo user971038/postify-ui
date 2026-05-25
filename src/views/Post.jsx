@@ -69,7 +69,7 @@ const Post = () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 content: commentText,
-                user_id: resolvedUserId, // 👈 Dynamic UUID from backend response
+                user_id: resolvedUserId,
                 post_id: postId
             })
             });
@@ -236,7 +236,8 @@ const Post = () => {
                     {post.comments.map((comment) => (
                       <li key={comment.id} className="p-3 bg-gray-900/30 border border-gray-800 rounded-xl space-y-1">
                         <div className="flex justify-between items-center text-[11px] text-blue-400">
-                          <span className="font-mono">User ID: {comment.user_id.substring(0, 8)}...</span>
+                          {/*<span className="font-mono">User ID: {comment.user_id.substring(0, 8)}...</span>*/}
+                          <span className="font-semibold text-blue-400">@{comment.username}</span>
                           <span className="text-gray-500">{new Date(comment.created_at).toLocaleDateString()}</span>
                         </div>
                         <p className="text-xs text-gray-300 leading-normal">{comment.content}</p>
@@ -250,10 +251,40 @@ const Post = () => {
         </div>
 
         {post && (
-          <form onSubmit={submitComment} className="mt-3 mb-4 flex items-center gap-2 bg-gray-900 border border-gray-800 rounded-xl p-2 focus-within:border-purple-500/50 transition-colors">
-            <input type="text" placeholder="Escribe un comentario..." value={commentText} onChange={(e) => setCommentText(e.target.value)} disabled={commenting} className="flex-1 bg-transparent border-none text-xs text-gray-200 placeholder-gray-500 focus:outline-none px-2" />
-            <button type="submit" disabled={commenting || !commentText.trim()} className="p-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors"><GoPaperAirplane className="w-3.5 h-3.5" /></button>
-          </form>
+            <form onSubmit={submitComment} className="mt-3 mb-4 space-y-2">
+                
+                <div className="flex bg-gray-900 border border-gray-800 rounded-xl p-2 focus-within:border-purple-500/30 transition-colors max-w-[180px]">
+                <input 
+                    type="text" 
+                    placeholder="@usuario..." 
+                    value={commentUsername}
+                    onChange={(e) => setCommentUsername(e.target.value)}
+                    disabled={commenting}
+                    required
+                    className="w-full bg-transparent border-none text-[11px] text-blue-400 placeholder-gray-600 focus:outline-none px-1 font-medium"
+                />
+                </div>
+
+                <div className="flex items-center gap-2 bg-gray-900 border border-gray-800 rounded-xl p-2 focus-within:border-purple-500/50 transition-colors">
+                <input 
+                    type="text" 
+                    placeholder="Escribe un comentario..." 
+                    value={commentText}
+                    onChange={(e) => setCommentText(e.target.value)}
+                    disabled={commenting}
+                    required
+                    className="flex-1 bg-transparent border-none text-xs text-gray-200 placeholder-gray-500 focus:outline-none px-2"
+                />
+                <button 
+                    type="submit" 
+                    disabled={commenting || !commentText.trim() || !commentUsername.trim()}
+                    className="p-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors disabled:opacity-40 cursor-pointer"
+                >
+                    <GoPaperAirplane className="w-3.5 h-3.5" />
+                </button>
+                </div>
+
+            </form>
         )}
 
         <div className="bg-gradient-to-r from-blue-950/40 to-purple-950/40 border border-gray-800 rounded-xl p-3 flex justify-around text-gray-400 shadow-inner">

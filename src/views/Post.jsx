@@ -5,6 +5,7 @@ import useFetch from '../hooks/useFetch';
 
 import { GoSearch, GoHeart, GoComment, GoPaperAirplane, GoChevronLeft } from "react-icons/go";
 import { FaUser, FaHome, FaGithub } from "react-icons/fa";
+import { IoIosCreate } from "react-icons/io";
 
 const Post = () => {
   const { postId } = useParams();
@@ -164,7 +165,7 @@ const Post = () => {
         <div className="bg-gradient-to-r from-blue-950/40 to-purple-950/40 border border-gray-800 rounded-xl p-3 flex justify-around text-gray-400 shadow-inner">
           <FaHome className="w-5 h-5 cursor-pointer hover:text-white transition-colors" onClick={() => navigate('/')} />
           <GoSearch className="w-5 h-5 opacity-30 cursor-not-allowed" />
-          <FaUser className="w-5 h-5 cursor-pointer hover:text-white transition-colors" onClick={() => navigate(-1)} />
+          <IoIosCreate className="w-5 h-5 cursor-pointer hover:text-white transition-colors" onClick={() => navigate(`/NewPost/${userId}`)} />
           <FaGithub className="w-5 h-5 cursor-pointer hover:text-white transition-colors" onClick={() => navigate('/')} />
         </div>
 

@@ -78,7 +78,7 @@ function App() {
                   onClick={() => navigate(`/profile/${user.id}`)}
                   className="p-3.5 bg-gray-900/50 border border-gray-800 rounded-xl hover:border-purple-500/50 hover:bg-gray-900 cursor-pointer transition-all duration-200 flex justify-between items-center group"
                 >
-                  <span className="font-medium text-gray-200 group-hover:text-white transition-colors">{user.name}</span>
+                  <span className="font-medium text-gray-200 group-hover:text-white transition-colors">{user.username}</span>
                   <span className="text-xs text-blue-400 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all">Ver Perfil →</span>
                 </li>
               ))}

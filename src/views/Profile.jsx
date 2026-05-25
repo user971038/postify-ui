@@ -3,8 +3,9 @@ import { useParams, useNavigate } from 'react-router';
 
 import useFetch from '../hooks/useFetch';
 
-import { GoHome, GoSearch, GoBell, GoMail, GoCopilot } from "react-icons/go";
-import { FaUser } from "react-icons/fa";
+import { GoSearch, GoBell, GoMail, GoCopilot } from "react-icons/go";
+import { FaUser, FaGithub, FaHome } from "react-icons/fa";
+import { IoIosCreate } from "react-icons/io";
 
 const Profile = () => {
   const { userId } = useParams();
@@ -55,7 +56,7 @@ const Profile = () => {
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
       
-      <div className="w-full max-w-md bg-gray-950 border border-gray-800 rounded-2xl p-6 shadow-2xl shadow-purple-950/10">
+      <div className="w-full max-w-md h-[85vh] flex flex-col justify-between bg-gray-950 border border-gray-800 rounded-2xl p-6 shadow-2xl shadow-purple-950/10">
 
         <div className="bg-gray-900/40 border border-gray-800 rounded-xl p-4 mb-5">
           
@@ -64,7 +65,10 @@ const Profile = () => {
           
           {user && !userLoading && (
             <div className="space-y-1.5 text-sm text-gray-300">
-              <p className="uppercase font-bold"><FaUser className="w-5 h-5 text-gray-500" /> {user.name || 'No se encontró el usuario.'} {user.lastname || ''}</p>
+              <div className="flex items-center gap-3">
+                <FaUser className="w-4 h-4 text-gray-500" />
+                <p className="uppercase font-bold"> {user.name || 'No se encontró el usuario.'} {user.lastname || ''}</p>
+              </div>
               <p className="text-blue-400 font-medium">@{user.username || ''}</p>
             </div>
           )}
@@ -75,7 +79,7 @@ const Profile = () => {
           {postsLoading && <p className="text-xs text-gray-500 animate-pulse">Cargando...</p>}
           {postsError && <p className="text-xs text-red-400">No se pudieron recuperar las publicaciones.</p>}
           
-          <div className="max-h-[600px] overflow-y-auto space-y-3 pr-1 custom-scrollbar">
+          <div className="h-[54vh] overflow-y-auto space-y-3 pr-1 custom-scrollbar">
             {posts && !postsLoading && posts.length === 0 && (
               <p className="text-xs text-gray-500 italic text-center py-6">No hay publicaciones.</p>
             )}
@@ -87,7 +91,7 @@ const Profile = () => {
                     key={post.id} 
                     className="p-3 bg-gray-900 border border-gray-800/80 rounded-xl space-y-2 hover:border-purple-500/30 transition-colors"
                   >
-                    <div className="text-sm text-gray-200 font-medium leading-relaxed">{post.description}</div>
+                    <div className="text-sm text-gray-200 leading-relaxed">{post.description}</div>
                     
                     {post.images && post.images.length > 0 && (
                       <div className="grid grid-cols-2 gap-1.5 pt-1">
@@ -96,7 +100,7 @@ const Profile = () => {
                             key={img.id || img.url} 
                             src={img.url} 
                             alt="Post Attachment" 
-                            className="w-full h-24 object-cover rounded-lg border border-gray-800"
+                            className="w-[100px] h-[100px] object-cover rounded-lg border border-gray-800"
                           />
                         ))}
                       </div>
@@ -109,37 +113,11 @@ const Profile = () => {
         </div>
 
         <div className="bg-gradient-to-r from-blue-950/40 to-purple-950/40 border border-gray-800 rounded-xl p-3 flex justify-around text-gray-400 mb-5 shadow-inner">
-          <GoHome className="w-5 h-5 cursor-pointer hover:text-white transition-colors" onClick={() => navigate('/')} />
+          <FaHome className="w-5 h-5 cursor-pointer hover:text-white transition-colors" onClick={() => navigate('/')} />
           <GoSearch className="w-5 h-5 opacity-30 cursor-not-allowed" />
-          <GoBell className="w-5 h-5 opacity-30 cursor-not-allowed" />
-          <GoMail className="w-5 h-5 opacity-30 cursor-not-allowed" />
-          <GoCopilot className="w-5 h-5 opacity-30 cursor-not-allowed" />
+          <IoIosCreate className="w-5 h-5 cursor-pointer hover:text-white transition-colors" onClick={() => navigate(`/NewPost/${userId}`)} />
+          <FaGithub className="w-5 h-5 cursor-pointer hover:text-white transition-colors" onClick={() => navigate('/')} />
         </div>
-
-        <form onSubmit={submitPost} className="border-t border-gray-800 pt-4">
-          <input 
-            type="text" 
-            placeholder="Broadcast a new memory..." 
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="w-full p-2.5 bg-gray-900 border border-gray-800 rounded-xl mb-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-purple-500 transition-colors"
-          />
-
-          <div className="flex items-center justify-between gap-3">
-            <input
-              type="file"
-              multiple
-              accept="image/*"
-              onChange={handleFileChange}
-              className="text-xs text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border file:border-gray-800 file:text-xs file:font-medium file:bg-gray-900 file:text-gray-400 hover:file:bg-gray-800 hover:file:text-white transition-all cursor-pointer"
-            />
-            <input 
-              type="submit" 
-              value="Publish" 
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-semibold py-1.5 px-4 rounded-lg text-xs transition-all cursor-pointer shadow-md shadow-purple-900/20" 
-            />
-          </div>
-        </form>
 
       </div>
     </div>

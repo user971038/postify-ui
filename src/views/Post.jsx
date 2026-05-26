@@ -24,20 +24,75 @@ const Post = () => {
 
   const [commentUsername, setCommentUsername] = useState('');
 
+  const [likeUsername, setLikeUsername] = useState('');
+  const [showLikeInput, setShowLikeInput] = useState(false);
+
   const currentUserId = "00000000-0000-0000-0000-000000000000"; 
 
-  const handleLike = async () => {
-    try {
-      const res = await fetch(`http://localhost:8000/posts/${postId}/likes`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: currentUserId, post_id: postId })
-      });
-      if (res.ok) window.location.reload();
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    //const handleLike = async () => {
+        //try {
+        //const res = await fetch(`http://localhost:8000/posts/${postId}/likes`, {
+            //method: 'POST',
+            //headers: { 'Content-Type': 'application/json' },
+            //body: JSON.stringify({ user_id: currentUserId, post_id: postId })
+        //});
+        //if (res.ok) window.location.reload();
+        //} catch (error) {
+        //console.error(error);
+        //}
+    //};
+
+    const handleLike = async (e) => {
+        if (e) e.preventDefault();
+        if (!showLikeInput) {
+            setShowLikeInput(true);
+            return;
+        }
+
+        if (!likeUsername.trim()) {
+            alert("Por favor, ingresa tu nombre de usuario para dar like.");
+            return;
+        }
+
+        try {
+            const userRes = await fetch(`http://localhost:8000/users/by-username/${likeUsername.trim()}`);
+        
+            if (!userRes.ok) {
+                if (userRes.status === 404) {
+                    alert("El usuario especificado no existe.");
+                } else {
+                    alert("Error al validar el usuario.");
+                }
+                return;
+            }
+            
+            const userData = await userRes.json();
+            const resolvedUserId = userData.id;
+
+            const res = await fetch(`http://localhost:8000/posts/${postId}/likes`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    user_id: resolvedUserId, 
+                    post_id: postId 
+                })
+            });
+        
+            if (res.ok) {
+                setShowLikeInput(false);
+                setLikeUsername('');
+                window.location.reload();
+            } else {
+                const errData = await res.json();
+                alert(errData.detail || "Ya le diste like a esta publicación");
+                setShowLikeInput(false);
+                setLikeUsername('');
+            }
+        } catch (error) {
+            console.error("Error setting like state registration:", error);
+            alert("Error de conexión con el servidor.");
+        }
+    };
 
     const submitComment = async (e) => {
         e.preventDefault();
@@ -229,7 +284,7 @@ const Post = () => {
                   </div>
                 )}
 
-                <div className="flex items-center gap-4 pt-2 border-t border-gray-800/50 text-gray-400 text-xs">
+                {/*<div className="flex items-center gap-4 pt-2 border-t border-gray-800/50 text-gray-400 text-xs">
                   <button onClick={handleLike} className="flex items-center gap-1.5 hover:text-red-400 transition-colors group">
                     <GoHeart className="w-4 h-4 group-active:scale-120 transition-transform" />
                     <span>{post.likes ? post.likes.length : 0} Likes</span>
@@ -238,7 +293,58 @@ const Post = () => {
                     <GoComment className="w-4 h-4" />
                     <span>{post.comments ? post.comments.length : 0} Comentarios</span>
                   </div>
+                </div>*/}
+
+                <div className="pt-2 border-t border-gray-800/50 text-gray-400 text-xs space-y-2">
+  
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                        <button 
+                            onClick={handleLike}
+                            className={`flex items-center gap-1.5 transition-colors group cursor-pointer ${showLikeInput ? 'text-blue-400 font-medium' : 'hover:text-red-400'}`}
+                        >
+                            <GoHeart className={`w-4 h-4 group-active:scale-125 transition-transform ${showLikeInput ? 'fill-blue-500 text-blue-500 animate-pulse' : ''}`} />
+                            <span>{post.likes ? post.likes.length : 0} Likes</span>
+                        </button>
+
+                        <div className="flex items-center gap-1.5 text-gray-500">
+                            <GoComment className="w-4 h-4" />
+                            <span>{post.comments ? post.comments.length : 0} Comentarios</span>
+                        </div>
+                        </div>
+
+                        {showLikeInput && (
+                        <button 
+                            onClick={() => { setShowLikeInput(false); setLikeUsername(''); }}
+                            className="text-[10px] text-gray-600 hover:text-gray-400 transition-colors cursor-pointer uppercase tracking-wider"
+                        >
+                            Cancelar
+                        </button>
+                        )}
+                    </div>
+
+                    {showLikeInput && (
+                        <div className="flex items-center gap-2 bg-gray-950 border border-gray-800/80 rounded-xl p-1.5 animate-fadeIn">
+                        <input 
+                            type="text" 
+                            placeholder="Confirma tu @usuario para dar like..." 
+                            value={likeUsername}
+                            onChange={(e) => setLikeUsername(e.target.value)}
+                            className="flex-1 bg-transparent border-none text-[11px] text-gray-300 placeholder-gray-600 focus:outline-none px-2"
+                            autoFocus
+                            onKeyDown={(e) => { if (e.key === 'Enter') handleLike(); }}
+                        />
+                        <button 
+                            onClick={handleLike}
+                            className="bg-blue-600 hover:bg-blue-500 text-white font-semibold text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-md transition-colors cursor-pointer"
+                        >
+                            Confirmar
+                        </button>
+                        </div>
+                    )}
+
                 </div>
+
               </div>
 
               <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider pl-1">
